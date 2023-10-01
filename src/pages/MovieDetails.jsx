@@ -5,7 +5,7 @@ import { BackLink } from 'components/BackLink';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
-  const [movieDetails, setMovieDetails] = useState({});
+  const [movieDetails, setMovieDetails] = useState(null);
   const location = useLocation();
   const backLink = useRef(location.state?.from ?? '/movies');
 

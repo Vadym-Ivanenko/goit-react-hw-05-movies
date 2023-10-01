@@ -1,33 +1,30 @@
 import { useState, useEffect } from 'react';
 import { getMovieCast } from '../services/api';
+import { useParams } from 'react-router-dom';
 
-export const Cast = ({ movieId }) => {
+export const Cast = () => {
+  const { movieId } = useParams();
   const [cast, setCast] = useState([]);
 
   useEffect(() => {
-    getMovieCast(movieId)
-      .then(response => {
-        setCast(response.data.cast);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    getMovieCast(movieId, 'credits')
+      .then(credits => setCast(credits.cast))
+      .catch(console.log);
   }, [movieId]);
-
-  const getImageUrl = path => {
-    return `https://image.tmdb.org/t/p/w200${path}`;
-  };
 
   return (
     <div>
       <h3>Cast: </h3>
       <ul>
         {cast.map(actor => (
-          <li key={actor.id}>
-            <img src={getImageUrl(actor.profile_path)} alt={actor.name} />
+          <li key={actor.cast_id}>
+            <img
+              src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
+              alt={actor.name}
+            />
             <div>
-              <span>{actor.name}</span>
-              <span>{actor.character}</span>
+              <p>{actor.name}</p>
+              <p>{actor.character}</p>
             </div>
           </li>
         ))}
